@@ -96,8 +96,7 @@
 
     <textarea
       id="aiInput"
-      placeholder="예: 내일 오후 3시에 치과 예약">
-    </textarea>
+      placeholder="예: 내일 오후 3시에 치과 예약"></textarea>
 
     <button
       class="ai-button"
@@ -115,18 +114,14 @@
   <h2>🔴 지금 해야 할 일</h2>
 
   <div id="urgentTasks">
-
     <p>일정을 불러오는 중...</p>
-
   </div>
 
 
   <h2>📅 오늘 예정</h2>
 
   <div id="todayTasks">
-
     <p>일정을 불러오는 중...</p>
-
   </div>
 
 
@@ -142,94 +137,72 @@
   <script>
 
     const API_URL =
-  "https://script.google.com/macros/s/AKfycbyv35chotd4Ih-dxhWi6q-8kviQwOTYErbWTkbQoUHCKD5EyzJYBpsUL8gMMjNyX8ui2Q/exec";
+      "https://script.google.com/macros/s/AKfycbyv35chotd4Ih-dxhWi6q-8kviQwOTYErbWTkbQoUHCKD5EyzJYBpsUL8gMMjNyX8ui2Q/exec";
 
 
-function addAI() {
-  alert("버튼이 눌렸어요!");
-  
-  const input = document.getElementById("aiInput");
-  
-  const message =
-    document.getElementById("message");
+    function addAI() {
 
-  const text =
-    input.value.trim();
+      alert("버튼이 눌렸어요!");
 
+      const input =
+        document.getElementById("aiInput");
 
-  if (!text) {
+      const message =
+        document.getElementById("message");
 
-    message.innerText =
-      "일정을 입력해주세요.";
-
-    return;
-
-  }
+      const text =
+        input.value.trim();
 
 
-  message.innerText =
-    "🤖 AI가 일정을 분석하고 있어요...";
+      if (!text) {
+
+        message.innerText =
+          "일정을 입력해주세요.";
+
+        return;
+
+      }
 
 
- fetch(API_URL, {
+      message.innerText =
+        "🤖 AI가 일정을 분석하고 있어요...";
 
-  method: "POST",
 
-  mode: "no-cors",
+      fetch(API_URL, {
 
-  headers: {
-    "Content-Type": "text/plain;charset=utf-8"
-  },
+        method: "POST",
 
-  body: JSON.stringify({
-    action: "addAI",
-    text: text
-  })
+        mode: "no-cors",
 
-})
-.then(function() {
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
 
-  message.innerText =
-    "✅ 일정 추가 요청을 보냈어요!";
+        body: JSON.stringify({
+          action: "addAI",
+          text: text
+        })
 
-  input.value = "";
+      })
 
-})
-.catch(function(error) {
+      .then(function() {
 
-  message.innerText =
-    "❌ 오류: " + error.message;
+        message.innerText =
+          "✅ 일정 추가 요청을 보냈어요!";
 
-});
-  .then(function(response) {
-    return response.json();
-  })
+        input.value = "";
 
-  .then(function(data) {
+      })
 
-    if (!data.success) {
-      throw new Error(data.message);
+      .catch(function(error) {
+
+        message.innerText =
+          "❌ 오류: " + error.message;
+
+      });
+
     }
 
-    message.innerText =
-      "✅ 일정이 추가되었습니다! " +
-      data.result.date + " " +
-      data.result.time +
-      " - " +
-      data.result.task;
-
-    input.value = "";
-
-  })
-
-  .catch(function(error) {
-
-    message.innerText =
-      "❌ 오류: " + error.message;
-
-  });
-
-}
   </script>
 
 
