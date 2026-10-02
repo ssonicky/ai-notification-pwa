@@ -141,33 +141,80 @@
 
   <script>
 
-    function addAI() {
-
-      const input =
-        document.getElementById("aiInput");
-
-      const message =
-        document.getElementById("message");
-
-      const text =
-        input.value.trim();
+    const API_URL =
+  "https://script.google.com/macros/s/AKfycbyv35chotd4Ih-dxhWi6q-8kviQwOTYErbWTkbQoUHCKD5EyzJYBpsUL8gMMjNyX8ui2Q/exec";
 
 
-      if (!text) {
+function addAI() {
 
-        message.innerText =
-          "일정을 입력해주세요.";
+  const input =
+    document.getElementById("aiInput");
 
-        return;
+  const message =
+    document.getElementById("message");
 
-      }
+  const text =
+    input.value.trim();
 
 
-      message.innerText =
-        "🤖 AI가 일정을 분석하고 있어요...";
+  if (!text) {
 
+    message.innerText =
+      "일정을 입력해주세요.";
+
+    return;
+
+  }
+
+
+  message.innerText =
+    "🤖 AI가 일정을 분석하고 있어요...";
+
+
+  fetch(API_URL, {
+
+    method: "POST",
+
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+
+    body: JSON.stringify({
+      action: "addAI",
+      text: text
+    })
+
+  })
+
+  .then(function(response) {
+    return response.json();
+  })
+
+  .then(function(data) {
+
+    if (!data.success) {
+      throw new Error(data.message);
     }
 
+    message.innerText =
+      "✅ 일정이 추가되었습니다! " +
+      data.result.date + " " +
+      data.result.time +
+      " - " +
+      data.result.task;
+
+    input.value = "";
+
+  })
+
+  .catch(function(error) {
+
+    message.innerText =
+      "❌ 오류: " + error.message;
+
+  });
+
+}
   </script>
 
 
