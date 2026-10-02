@@ -171,21 +171,36 @@ function addAI() {
     "🤖 AI가 일정을 분석하고 있어요...";
 
 
-  fetch(API_URL, {
+ fetch(API_URL, {
 
-    method: "POST",
+  method: "POST",
 
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
-    },
+  mode: "no-cors",
 
-    body: JSON.stringify({
-      action: "addAI",
-      text: text
-    })
+  headers: {
+    "Content-Type": "text/plain;charset=utf-8"
+  },
 
+  body: JSON.stringify({
+    action: "addAI",
+    text: text
   })
 
+})
+.then(function() {
+
+  message.innerText =
+    "✅ 일정 추가 요청을 보냈어요!";
+
+  input.value = "";
+
+})
+.catch(function(error) {
+
+  message.innerText =
+    "❌ 오류: " + error.message;
+
+});
   .then(function(response) {
     return response.json();
   })
